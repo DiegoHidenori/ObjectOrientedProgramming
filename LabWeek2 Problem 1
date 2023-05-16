@@ -1,0 +1,37 @@
+namespace LabWeek2Problems
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //Question 1 - Average of five exam scores
+            int exam1;
+            int exam2;
+            int exam3;
+            int exam4;
+            int exam5;
+            double average;
+            const int NUMBER_SCORES = 5;
+
+            Console.WriteLine("Enter first exam grade: ");
+            exam1 = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Enter second exam grade: ");
+            exam2 = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Enter third exam grade: ");
+            exam3 = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Enter fourth exam grade: ");
+            exam4 = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Enter fifth exam grade: ");
+            exam5 = Convert.ToInt32(Console.ReadLine());
+
+            average = (exam1 + exam2 + exam3 + exam4 + exam5) / NUMBER_SCORES;
+
+            Console.WriteLine("The exam grades are: " + exam1 + ' ' + exam2 + ' ' + exam3 + ' ' + exam4 + ' ' + exam5);
+            Console.WriteLine("The average of the five exams is: " + average);
+        }
+    }
+}
