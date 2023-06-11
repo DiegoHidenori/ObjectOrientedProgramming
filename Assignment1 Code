@@ -1,0 +1,235 @@
+namespace Assignment1
+{
+    internal class program
+    {
+        static void Main(string[] args)
+        {
+            string firstName;
+            string lastName;
+
+            Console.WriteLine("Hello, welcome to Assignment 1 Quiz");
+            Console.Write("Please enter your first name: ");
+            firstName = Console.ReadLine();
+            Console.Write("Please enter your last name: ");
+            lastName = Console.ReadLine();
+            Console.WriteLine("Welcome " + firstName + " " + lastName);
+
+            Console.WriteLine("Question #1: ");
+            Console.WriteLine("What is my favorite sport? ");
+            Console.WriteLine("1) Volleyball");
+            Console.WriteLine("2) Soccer");
+            Console.WriteLine("3) Basketball");
+            Console.WriteLine("4) Football");
+            int problem1;
+            int counter1 = 0;
+
+            for (int q1 = 1; q1 <= 4; q1++)
+            {
+                Console.Write("Enter answer: ");
+                problem1 = Convert.ToInt32(Console.ReadLine());
+                if (problem1 == 2)
+                {
+                    Console.WriteLine("Answer correct.");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Incorrect try again.");
+                    counter1++;
+                }
+            }
+            int marks1 = 0;
+            switch (counter1)
+            {
+                case 0:
+                    marks1 = 20;
+                    break;
+                case 1:
+                    marks1 = 10;
+                    break;
+                case 2:
+                    marks1 = 5;
+                    break;
+                case 3:
+                    marks1 = 0;
+                    break;
+                case 4:
+                    marks1 = 0;
+                    break;
+                default:
+                    Console.WriteLine("There has been an error with question 1");
+                    break;
+            }
+            Console.WriteLine("You have received " + marks1 + " marks");
+            Console.WriteLine("\n");
+            /*
+            while (looping1)
+            {
+                Console.Write("Enter answer: ");
+                problem1 = Convert.ToInt32(Console.ReadLine());
+                if (problem1 == 2)
+                {
+                    Console.WriteLine("Answer correct.");
+                    looping1 = false;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Incorrect try again.");
+                    counter1++;
+                }
+            }
+            */
+            
+            Console.WriteLine("Question #2: ");
+            Console.WriteLine("What is my favorite song? ");
+            Console.WriteLine("1) Love Me Again - John Newman");
+            Console.WriteLine("2) Make My Heart Go - Ethan Sak");
+            Console.WriteLine("3) Pompeii - Bastille");
+            Console.WriteLine("4) Robarte un Beso - Carlos Vives, Sebastian Yatra");
+            int problem2;
+            int counter2 = 0;
+
+            for (int q2 = 1; q2 <= 4; q2++)
+            {
+                Console.Write("Enter answer: ");
+                problem2 = Convert.ToInt32(Console.ReadLine());
+                if (problem2 == 4)
+                {
+                    Console.WriteLine("Answer correct.");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Incorrect try again.");
+                    counter2++;
+                }
+            }
+            int marks2 = 0;
+            switch (counter2)
+            {
+                case 0:
+                    marks2 = 20;
+                    break;
+                case 1:
+                    marks2 = 10;
+                    break;
+                case 2:
+                    marks2 = 5;
+                    break;
+                case 3:
+                    marks2 = 0;
+                    break;
+                case 4:
+                    marks2 = 0;
+                    break;
+                default:
+                    Console.WriteLine("There has been an error with question 2");
+                    break;
+            }
+            Console.WriteLine("You have received " + marks2 + " marks");
+            Console.WriteLine("\n");
+
+            /*
+            while (looping2)
+            {
+                Console.Write("Enter answer: ");
+                problem2 = Convert.ToInt32(Console.ReadLine());
+                if (problem2 == 4)
+                {
+                    Console.WriteLine("Answer correct.");
+                    looping2 = false;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Incorrect try again.");
+                }
+            }
+            */
+
+            Console.WriteLine("Question #3: ");
+            Console.WriteLine("What is my favorite season? ");
+            Console.WriteLine("1) Winter");
+            Console.WriteLine("2) Spring");
+            Console.WriteLine("3) Summer");
+            Console.WriteLine("4) Fall");
+            int problem3;
+            int counter3 = 0;
+
+            for (int q3 = 1; q3 <= 4; q3++)
+            {
+                Console.Write("Enter answer: ");
+                problem3 = Convert.ToInt32(Console.ReadLine());
+                if (problem3 == 3)
+                {
+                    Console.WriteLine("Answer correct.");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Incorrect try again.");
+                    counter3++;
+                }
+            }
+            int marks3 = 0;
+            switch (counter3)
+            {
+                case 0:
+                    marks3 = 20;
+                    break;
+                case 1:
+                    marks3 = 10;
+                    break;
+                case 2:
+                    marks3 = 5;
+                    break;
+                case 3:
+                    marks3 = 0;
+                    break;
+                case 4:
+                    marks3 = 0;
+                    break;
+                default:
+                    Console.WriteLine("There has been an error with question 2");
+                    break;
+            }
+            Console.WriteLine("You have received " + marks3 + " marks");
+            Console.WriteLine("\n");
+
+            /*
+            while (looping3)
+            {
+                Console.Write("Enter answer: ");
+                problem3 = Convert.ToInt32(Console.ReadLine());
+                if (problem3 == 1)
+                {
+                    Console.WriteLine("Answer correct.");
+                    looping3 = false;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Incorrect try again.");
+                }
+            }
+            */
+
+            /*
+            Console.WriteLine("Quiz Progress Report: ");
+            Console.WriteLine("You have received " + totalMarks + " marks");
+            */
+            int totalMarks = marks1 + marks2 + marks3;
+            decimal percentMarks = ((decimal)totalMarks / 60) * 100;
+            Console.WriteLine("Good job finishing the quiz!! :)");
+            Console.WriteLine("\n");
+            Console.WriteLine("Quiz Progress Report:");
+            Console.WriteLine("Full Name: " + firstName + " " + lastName);
+            Console.WriteLine("Total marks: " + totalMarks + " marks");
+            Console.WriteLine("Percentage score: " + percentMarks.ToString("0.00") + "%" + " (" + totalMarks + "/60 marks)");
+            Console.WriteLine("Question 1 failed attempts: " + counter1);
+            Console.WriteLine("Question 2 failed attempts: " + counter2);
+            Console.WriteLine("Question 3 failed attempts: " + counter3);
+        }
+    }
+}
