@@ -1,0 +1,434 @@
+// Diego Tsukayama 101472085
+// Illia Konik 101460488
+// Nelson Ortiz 101313314
+using System;
+
+// In program.cs, there's 3 classes: Program, Utilities, and Game
+// Program class is the main execution, and it has the do while loop to keep showing the options the user can choose
+// until the user enters 9
+// There's the option to change the file path of the txt file that will be used
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        string fileLocationSelection;
+        string userFileLocationSelection;
+        Console.WriteLine("Before the application starts, would you like to change the txt file location?");
+        Console.WriteLine("1) Yes, I would like to change the file location");
+        Console.WriteLine("2) No, I would like to keep the default location");
+        Console.WriteLine("If not, it will be set to the default location, which is \"./VideoGames.txt\"");
+        Console.Write("Answer: ");
+        fileLocationSelection = Console.ReadLine();
+        if (fileLocationSelection == "1")
+        {
+            Console.WriteLine("Please enter the file location that you wish: ");
+            Console.WriteLine("(Enter number 0 to cancel)");
+            userFileLocationSelection = Console.ReadLine();
+            if (userFileLocationSelection == "0")
+            {
+
+            }
+            else
+            {
+                Utilities.relativeFilePath = userFileLocationSelection;
+            }
+        }
+
+        string userSelection;
+        do
+        {
+            Console.WriteLine("");
+            Console.WriteLine("Welcome to the program");
+            Console.WriteLine("Please select the option that you wish to run:");
+            Console.WriteLine("----------------------------------------------");
+            Console.WriteLine("1) Add new product");
+            Console.WriteLine("2) Search product based on item Number");
+            Console.WriteLine("3) Search product based on maximum price");
+            Console.WriteLine("4) Show statistical analysis");
+            Console.WriteLine("9) Quit application");
+            Console.Write("Your selection: ");
+            userSelection = Console.ReadLine();
+            switch (userSelection)
+            {
+                case "1":
+                    Utilities.AddGame();
+                    break;
+                case "2":
+                    Utilities.SearchByNumber();
+                    break;
+                case "3":
+                    Utilities.SearchByPrice();
+                    break;
+                case "4":
+                    Utilities.ProvideStat();
+                    break;
+                case "9": break;
+                default:
+                    Console.WriteLine("Invalid selection. Please try again.");
+                    break;
+            }
+        }
+        while (userSelection != "9");
+    }
+}
+
+// The utilities section is for the functionalities that can be used in the program
+// The txt file that will be used in the program appears here. It can be changed if the user desires so
+
+// ---------------- Utilities section ------------------------
+public class Utilities
+{
+    public static string relativeFilePath = "./VideoGames.txt";
+
+    // This overloaded method is to read the input of the user and obtain an integer when it has only one parameter (one string)
+    // It checks to make sure the input is a valid integer
+    private static int GetUserInputInt(string prompt)
+    {
+        int result;
+        bool isValidInput = false;
+
+        do
+        {
+            Console.Write(prompt);
+            string? input = Console.ReadLine();
+
+            isValidInput = int.TryParse(input, out result);
+            if (!isValidInput)
+            {
+                Console.WriteLine("Invalid input! Please enter a valid integer.");
+            }
+        } while (!isValidInput);
+
+        return result;
+    }
+
+    // This overloaded method is when the method has 3 parameters
+    private static int GetUserInputInt(string prompt, int min, int max)
+    {
+        int result;
+        bool isValidInput = false;
+
+        do
+        {
+            Console.Write(prompt);
+            string input = Console.ReadLine();
+
+            isValidInput = int.TryParse(input, out result);
+            if (!isValidInput)
+            {
+                Console.WriteLine("Invalid input! Please enter a valid integer.");
+            }
+        } while (!isValidInput || result > max || result < min);
+
+        return result;
+    }
+
+    // This method is to read the user input and obtain a float number
+    // Similar to the previous overloaded method
+    private static float GetUserInputFloat(string prompt)
+    {
+        float result;
+        bool isValidInput = false;
+
+        do
+        {
+            Console.Write(prompt);
+            string input = Console.ReadLine();
+
+            isValidInput = float.TryParse(input, out result);
+            if (!isValidInput)
+            {
+                Console.WriteLine("Invalid input! Please enter a valid float number.");
+            }
+        } while (!isValidInput);
+
+        return result;
+    }
+
+    // This overloaded method is when it has 3 parameters
+    private static float GetUserInputFloat(string prompt, float min, float max)
+    {
+        float result;
+        bool isValidInput = false;
+
+        do
+        {
+            Console.Write(prompt);
+            string input = Console.ReadLine();
+
+            isValidInput = float.TryParse(input, out result);
+            if (!isValidInput)
+            {
+                Console.WriteLine("Invalid input! Please enter a valid float number.");
+            }
+        } while (!isValidInput || result > max || result < min);
+
+        return result;
+    }
+
+    // This overloaded method is to obtain a string
+    // Similar to the previous methods, it checks to make sure it's a valid integer
+    private static string GetUserInputString(string prompt, int min, int max)
+    {
+
+        Console.Write(prompt);
+
+        int result;
+        bool isValidInput = false;
+
+        do
+        {
+            Console.Write(prompt);
+            string input = Console.ReadLine();
+
+            isValidInput = int.TryParse(input, out result);
+            if (!isValidInput)
+            {
+                Console.WriteLine("Invalid input! Please enter a valid integer.");
+            }
+        } while (!isValidInput || result > max || result < min);
+
+        string stringResult = "000" + result.ToString();
+        int startIndex = stringResult.Length - 4;
+        string lastFourCharacters = stringResult.Substring(startIndex);
+
+        return lastFourCharacters;
+    }
+    private static string GetUserInputString(string prompt)
+    {
+        Console.Write(prompt);
+        return Console.ReadLine();
+    }
+
+
+    // This method is used when the user wants to add a game
+    // It makes sure that the input is 4 digits long and checks whether the number already exists in the txt file
+    public static void AddGame()
+    {
+        Console.WriteLine("");
+        string itemNumber = GetUserInputString("Enter Item Number (4 digits 0-9): ", 1, 9999);
+        if (IfIdExists(itemNumber))
+        {
+            Console.WriteLine("Game with such Id already exists");
+            return;
+        }
+
+        string itemName = GetUserInputString("Enter Item Name: ");
+        int quantity = GetUserInputInt("Enter Quantity: ", 0, 999999);
+        float price = GetUserInputFloat("Enter Price: ");
+        float userRating = GetUserInputFloat("Enter User Rating: ", 0, 5);
+
+
+
+        Game newGame = new(quantity, userRating, itemNumber, price, itemName);
+        string gameStr = newGame.ToString();
+
+        File.AppendAllText(relativeFilePath, gameStr);
+        Console.WriteLine("");
+        Console.WriteLine($"The game item called {itemName} was added to the list");
+    }
+
+    // This method is used to read the data from the chosen file and create a list of objects
+    // The method reads all the lines and returns an array of strings
+    // It's parsed to separate the different data
+    private static List<Game> setListOfGames()
+    {
+        List<Game> games = new List<Game>();
+
+        string[] lines = File.ReadAllLines(relativeFilePath);
+        foreach (string line in lines)
+        {
+            string[] parts = line.Split(',');
+
+            int quantity = int.Parse(parts[3]);
+            float userRating = float.Parse(parts[4]);
+            string itemNumber = parts[0];
+            float price = float.Parse(parts[2]);
+            string itemName = parts[1];
+
+            Game game = new(quantity, userRating, itemNumber, price, itemName);
+
+            if (game != null)
+            {
+                games.Add(game);
+            }
+        }
+        return games;
+    }
+
+    // This method is used to check if the 4 digit number input alreayd exists in the game list
+    // It calls the previous method first and then checks if one of them has the same item number as the user input
+    public static bool IfIdExists(string input)
+    {
+        List<Game> games = setListOfGames();
+        if (games == null)
+        {
+            return false;
+        }
+
+        Game foundGame = games.FirstOrDefault(game => game != null && game.ItemNumber == input);
+
+        if (foundGame != null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    // This method is used to search for a game based on the item number set by the user
+    public static void SearchByNumber()
+    {
+        Console.WriteLine("");
+        Console.Write("Enter an product ID: ");
+        string input = Console.ReadLine();
+        string stringResult = "000" + input;
+        int startIndex = stringResult.Length - 4;
+        string lastFourCharacters = stringResult.Substring(startIndex);
+
+        List<Game> games = setListOfGames();
+        if (games == null)
+        {
+            Console.WriteLine("");
+            Console.WriteLine("No games");
+        }
+
+        Game foundGame = games.FirstOrDefault(game => game != null && game.ItemNumber == lastFourCharacters);
+
+        if (foundGame != null)
+        {
+            string gameFound = foundGame.ToString(true);
+            Console.WriteLine("");
+            Console.WriteLine(gameFound);
+        }
+        else
+        {
+            Console.WriteLine("");
+            Console.WriteLine("No such ID in the file");
+        }
+    }
+
+    // This method is used to search for a game based on a price range from 0 to some max price
+    // The max price is set by the user input and it is included in the search
+    // If there are no games in this range, the code will display such
+    public static void SearchByPrice()
+    {
+        Console.WriteLine("");
+        Console.Write("Enter the price: ");
+        string input = Console.ReadLine();
+        Console.WriteLine("");
+        int.TryParse(input, out int number);
+
+        List<Game> games = setListOfGames();
+        if (games == null)
+        {
+            Console.WriteLine("");
+            Console.WriteLine("No games");
+        }
+
+        List<Game> filteredGames = games.Where(game => game.Price <= number).ToList();
+        if (games.Count == 0)
+        {
+            Console.WriteLine("");
+            Console.WriteLine("No games for this budget");
+        }
+        else
+        {
+            foreach (Game game in filteredGames)
+            {
+                Console.WriteLine(game.ToString(true));
+            }
+        }
+    }
+
+    // This method is used to show some statistics from the games that are already in the txt file
+    // Shows the mean price, the range of prices, and the cheapest and most expensive games
+    public static void ProvideStat()
+    {
+        List<Game> games = setListOfGames();
+
+        if (games == null || games.Count == 0)
+        {
+            Console.WriteLine("");
+            Console.WriteLine("No games");
+            return;
+        }
+
+        float mean = 0;
+        Game maxPrice = games[0];
+        Game minPrice = games[0];
+
+        foreach (Game game in games)
+        {
+            if (maxPrice.Price < game.Price)
+            {
+                maxPrice = game;
+            }
+            if (minPrice.Price > game.Price)
+            {
+                minPrice = game;
+            }
+            mean += game.Price;
+        }
+
+        mean /= games.Count;
+        Console.WriteLine("");
+        Console.WriteLine($"The mean value is: {mean}");
+        Console.WriteLine($"The range in price is: {maxPrice.Price - minPrice.Price}");
+        Console.WriteLine("");
+        Console.WriteLine("The most expensive game is:");
+        Console.WriteLine(maxPrice.ToString(true));
+        Console.WriteLine("The cheapest game is:");
+        Console.WriteLine(minPrice.ToString(true));
+    }
+}
+
+// This is the game section of the code
+// It's used to read the data from user input and store them into their respective variables
+// It contains the object constructor for the Game class
+// It's also where the ToString() method is overriden so it provides the data from a game separated by a comma
+// to make it easier to manipulate and save into a file
+// The second ToString() is an overloaded method that contains one parameter and it's used to show the game info
+// ---------------- Game section ----------------------------
+public class Game
+{
+    public float _userRating;
+    public string ItemNumber;
+    public string ItemName;
+    public float Price;
+    public int Quantity;
+    public float UserRating
+    {
+        get
+        {
+            return (float)Math.Round(_userRating, 2);
+        }
+        set
+        {
+            if (value >= 0 && value <= 5)
+            {
+                _userRating = value;
+            }
+        }
+    }
+
+    public Game(int Quantity, float UserRating, string ItemNumber, float Price, string ItemName)
+    {
+        this.Quantity = Quantity;
+        this.Price = Price;
+        this.ItemName = ItemName;
+        this.UserRating = UserRating;
+        this.ItemNumber = ItemNumber;
+    }
+
+    public override string ToString()
+    {
+        return $"{ItemNumber},{ItemName},{Price},{Quantity},{UserRating}\n";
+    }
+    public string ToString(bool forShow)
+    {
+        return $"Item Number: {ItemNumber}\nItem Name: {ItemName}\nPrice: {Price}\nQuantity: {Quantity}\nUser Rating: {UserRating}/5\n";
+    }
+}
