@@ -30,7 +30,17 @@ public class Program
             }
             else
             {
-                Utilities.relativeFilePath = userFileLocationSelection;
+                if (!File.Exists(userFileLocationSelection))
+                {
+                    Console.WriteLine($"File with directory {userFileLocationSelection} does not exist.");
+                    Console.WriteLine("File path has been set to the default");
+                }
+                else
+                {
+                    Console.WriteLine($"File with directory {userFileLocationSelection} does exist.");
+                    Console.WriteLine($"File path has been set to {userFileLocationSelection}");
+                    Utilities.relativeFilePath = userFileLocationSelection;
+                }
             }
         }
 
@@ -231,11 +241,43 @@ public class Utilities
     // This method is used to read the data from the chosen file and create a list of objects
     // The method reads all the lines and returns an array of strings
     // It's parsed to separate the different data
-    private static List<Game> setListOfGames()
+
+    #region The implementation using List which is adaptive to the size of db
+    //private static List<Game> setListOfGames()
+    //{
+    //    List<Game> games = new List<Game>();
+
+    //    string[] lines = File.ReadAllLines(relativeFilePath);
+    //    foreach (string line in lines)
+    //    {
+    //        string[] parts = line.Split(',');
+
+    //        int quantity = int.Parse(parts[3]);
+    //        float userRating = float.Parse(parts[4]);
+    //        string itemNumber = parts[0];
+    //        float price = float.Parse(parts[2]);
+    //        string itemName = parts[1];
+
+    //        Game game = new(quantity, userRating, itemNumber, price, itemName);
+
+    //        if (game != null)
+    //        {
+    //            games.Add(game);
+    //        }
+    //    }
+    //    return games;
+    //}
+
+    // This method is used to check if the 4 digit number input alreayd exists in the game list
+    // It calls the previous method first and then checks if one of them has the same item number as the user input
+    #endregion
+
+    private static Game[] SetArrayOfGames()
     {
-        List<Game> games = new List<Game>();
+        Game[] games = new Game[0]; // Initialize an empty array of Game objects
 
         string[] lines = File.ReadAllLines(relativeFilePath);
+
         foreach (string line in lines)
         {
             string[] parts = line.Split(',');
@@ -246,21 +288,21 @@ public class Utilities
             float price = float.Parse(parts[2]);
             string itemName = parts[1];
 
-            Game game = new(quantity, userRating, itemNumber, price, itemName);
+            Game game = new Game(quantity, userRating, itemNumber, price, itemName);
 
             if (game != null)
             {
-                games.Add(game);
+                Array.Resize(ref games, games.Length + 1); // Resize the array to accommodate the new Game object
+                games[games.Length - 1] = game; // Add the new Game object to the last index of the array
             }
         }
         return games;
     }
 
-    // This method is used to check if the 4 digit number input alreayd exists in the game list
-    // It calls the previous method first and then checks if one of them has the same item number as the user input
+
     public static bool IfIdExists(string input)
     {
-        List<Game> games = setListOfGames();
+        Game[] games = SetArrayOfGames();
         if (games == null)
         {
             return false;
@@ -288,7 +330,7 @@ public class Utilities
         int startIndex = stringResult.Length - 4;
         string lastFourCharacters = stringResult.Substring(startIndex);
 
-        List<Game> games = setListOfGames();
+        Game[] games = SetArrayOfGames();
         if (games == null)
         {
             Console.WriteLine("");
@@ -321,7 +363,7 @@ public class Utilities
         Console.WriteLine("");
         int.TryParse(input, out int number);
 
-        List<Game> games = setListOfGames();
+        Game[] games = SetArrayOfGames();
         if (games == null)
         {
             Console.WriteLine("");
@@ -329,7 +371,7 @@ public class Utilities
         }
 
         List<Game> filteredGames = games.Where(game => game.Price <= number).ToList();
-        if (games.Count == 0)
+        if (games.Length == 0)
         {
             Console.WriteLine("");
             Console.WriteLine("No games for this budget");
@@ -347,9 +389,9 @@ public class Utilities
     // Shows the mean price, the range of prices, and the cheapest and most expensive games
     public static void ProvideStat()
     {
-        List<Game> games = setListOfGames();
+        Game[] games = SetArrayOfGames();
 
-        if (games == null || games.Count == 0)
+        if (games == null || games.Length == 0)
         {
             Console.WriteLine("");
             Console.WriteLine("No games");
@@ -373,7 +415,8 @@ public class Utilities
             mean += game.Price;
         }
 
-        mean /= games.Count;
+        mean /= games.Length;
+
         Console.WriteLine("");
         Console.WriteLine($"The mean value is: {mean}");
         Console.WriteLine($"The range in price is: {maxPrice.Price - minPrice.Price}");
